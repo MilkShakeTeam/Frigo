@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %} Test {% endblock %}
+
+{% block content %}
+
+    <h1>Produits de votre frigo</h1>
+    {%  if fridge.products %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Date de péremption</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in fridge.products %}
+                <tr  {% if product.need_to_eat  %} class="danger" {% endif %}>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.quantity }}{{ product.unit }}</td>
+                    <td>{{ product.exp_date }}</td>
+                    <td>
+                        <a id="product_update" href="{% url 'app:delete' fridge_id=fridge.id product_id=product.id %}">Modifier</a> |
+                        <a id="product_delete" href="{% url 'app:delete' fridge_id=fridge.id product_id=product.id %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Frigo vide ! </p>
+    {% endif %}
+
+    <h3>Ajouter un nouveau produit au frigo</h3>
+
+    <form role="form" class="form-horizontal" action="{% url 'app:add' fridge.id %}" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group {% if form.name.errors %} has-error {% endif %}">
+            <label class="col-sm-2 control-label" for="id_name">Produit</label>
+            <div class="col-sm-4">
+                {{ form.name }}
+                {% if form.name.errors %}
+                    {% for error in form.name.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group {% if form.expdate.errors %} has-error {% endif %}">
+            <label class="col-sm-2 control-label" for="id_expdate">Date de péremption</label>
+            <div class="col-sm-4">
+                {{ form.expdate }}
+                {% if form.expdate.errors %}
+                    {% for error in form.expdate.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group {% if form.quantity.errors %} has-error {% endif %}">
+            <label class="col-sm-2 control-label" for="id_quantity">Quantité</label>
+            <div class="col-sm-4">
+                {{ form.quantity }}
+                {% if form.quantity.errors %}
+                    {% for error in form.quantity.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group {% if form.unit.errors %} has-error {% endif %}">
+            <label class="col-sm-2 control-label" for="id_unit">Unité</label>
+            <div class="col-sm-4">
+                {{ form.unit }}
+                {% if form.unit.errors %}
+                    {% for error in form.unit.errors %}
+                        <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-success">Ajouter le produit</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="{% url 'app:index' %}">Retour à la liste</a>
+
+{% endblock %}

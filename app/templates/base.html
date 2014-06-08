@@ -1,0 +1,35 @@
+{% load compress %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% compress js %}
+        <script type="text/javascript" src="{% static "js/libs/jQuery/jQuery.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/tooltip.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/affix.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/alert.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/button.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/carousel.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/collapse.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/dropdown.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/modal.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/popover.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/scrollspy.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/tab.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/libs/bootstrap/transition.js" %}"></script>
+
+        <script type="text/javascript" src="{% static "js/Product.js" %}"></script>
+    {% endcompress %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/less" href="{% static "less/libs/bootstrap/bootstrap.less" %}"/>
+        <link rel="stylesheet" type="text/less" href="{% static "less/test.less" %}"/>
+    {% endcompress %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

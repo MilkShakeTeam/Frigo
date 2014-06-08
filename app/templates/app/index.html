@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %} Test {% endblock %}
+
+{% block content %}
+
+{% if fridges %}
+    {% for fridge in fridges.values %}
+
+        <h1> <a href="{% url 'app:detail' fridge.id %}">{{ fridge.owner }}</a> </h1>
+
+        {%  if fridge.products %}
+            <ul>
+                {% for product in fridge.products %}
+                    <li>
+                        {{ product.name }} : {{ product.quantity }}{{ product.unit }} -
+                        {{ product.exp_date }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Frigo vide ! </p>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p>Aucun frigo...</p>
+{% endif %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<h3>Ajouter un nouveau frigo</h3>
+<form action="{% url 'app:add_fridge' %}" method="post">
+{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="fieldWrapper">
+        {{ form.owner.errors }}
+        <label for="id_owner">Propriétaire :</label>
+        {{ form.owner }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.capacity.errors }}
+        <label for="capacity">Capacité :</label>
+        {{ form.capacity }}
+    </div>
+    <input type="submit" value="Ajouter le frigo" />
+</form>
+
+{% endblock %}
